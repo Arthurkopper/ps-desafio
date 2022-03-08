@@ -84,4 +84,26 @@ class ProdutoController extends Controller
         $produto -> delete();
         return redirect('/produto');
     }
+
+
+    public function produtos(){
+        $produtos = Produto::all();
+        $categorias = Categoria::all();
+        return view('produtos.site', ['produtos' => $produtos, 'categorias' => $categorias]);
+    }
+
+    public function formulario(Request $request){
+        $categorias= Categoria::all();
+        $produtos = null;
+        $categoria = Categoria::find($request->categoria_id);
+        if($categoria){
+            $produtos = $categoria -> produto;
+            return view('produtos.site', ['categoria_id' => $categoria->id , 'produtos' => $produtos, 'categorias'=> $categorias]);
+        }
+        else{
+            $produtos= Produto::all();
+        }
+        
+        return view('produtos.site', [ 'produtos' => $produtos, 'categorias'=> $categorias]);
+    }
 }

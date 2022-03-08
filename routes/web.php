@@ -19,17 +19,18 @@ use App\Http\Controllers\ProdutoController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('formulario', [ProdutoController::class, 'formulario'])->name('formulario');
+Route::get('produtos', [ProdutoController::class, 'produtos'])->name('produtos');
+Route::get('/', function () {
+    return redirect()->route('produtos');
+});
 Route::middleware('locale')->group(function () {
 
     Route::put('/locale', [LocaleController::class, 'setLocale'])->name('locale');
 
-    Route::get('/', function () {
-        return redirect()->route('dashboard');
-    });
-
     Auth::routes();
-
+    
+    
     Route::middleware('auth')->group(function () {
 
         //Rota para dashboard
@@ -42,6 +43,8 @@ Route::middleware('locale')->group(function () {
         Route::resource('user', UserController::class, ['except' => ['show']]);
         Route::resource('categoria', CategoriaController::class, ['except' => ['show']]);
         Route::resource('produto', ProdutoController::class);
+        
+
 
 
         //Rotas para perfil do usuário
